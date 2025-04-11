@@ -1,0 +1,37 @@
+ % Criação de uma função que recebe o valor inicial de Ce e Rρ = A e
+ % somente o valor decimal de fr.
+function [X] = Largura_Teste(C_1,A,fr);
+    h=64000; % Parâmetro de taxa de transmissão.
+    cont=1; % Criação de uma variável para servir de contador.
+    erro=0.0001; % Definição de um erro para fazer encerrar o código.
+    N=C_1/h;  % Definição de número de servidores.
+    B=1; 
+    for x=1:N, % Laço de repetição para executar a formula rápida de Erlang 2 ou Erlang C.
+     B=B/(B+x/A);
+    end
+    C=B/(1-(A/(C_1/h))*(1-B)); % Resposta do Erlang 2.
+    y=(fr*(C_1/h))-(fr*A)-C; % Função em o Ce = y é isolado.
+    y_1=fr/h; % Derivada da função em relação a C_1.
+    resp=C_1-(y/y_1); % Resposta pelo método de Newton - Rapshon.
+    erro_1=resp-C_1; %Verificação se é uma resposta válida.
+    while erro_1 > erro || (-erro_1) > erro, % Caso não for repete todo o processo até que seja.
+        C_1=resp;
+        cont=cont+1;
+        N=C_1/h;
+        for x=1:N,
+         B=B/(B+x/A);
+        end
+        C=B/(1-(A/(C_1/h))*(1-B));
+        y=(fr*(C_1/h))-(fr*A)-C;
+    y_1=fr/h;
+        resp=C_1-(y/y_1);
+        erro_1=resp-C_1;
+         if cont==1000, % Caso o processo fique extremamente demorado, o código é terminado.
+            break;
+        end
+        
+    end
+    
+    X= resp; % Valor de Ce.
+
+end
