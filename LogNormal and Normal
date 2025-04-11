@@ -1,0 +1,13 @@
+function [mu2,sigma2] = lognpar(mu1,sigma1,tipo);
+% tipo == 1, calcula os parâmetros da logn (têm que ser os valores no tempo
+% ou o inverso da taxa real)
+% tipo == 2, calcula os parâmetros da distribuição normal associada
+if tipo == 1, mu2=2*log(mu1)-1/2*log(sigma1^2+mu1^2);% este é o valor do parãmetro mu da lognormal
+sigma2=-2*log(mu1)+log(sigma1^2+mu1^2);% este é o valor do parâmetro sigma^2 da lognormal (não vai para a saída)
+sigma2=sqrt(sigma2); % recupera o valor do parâmetro sigma da lognormal
+end
+
+if tipo == 2, mu2=exp(mu1+1/2*sigma1^2); % esta é a média da gaussiana associada
+sigma2=exp(2*mu1+sigma1^2)*(exp(sigma1^2)-1);% esta é a variância da gaussiana associada (não vai para a saída)
+sigma2=sqrt(sigma2); % este é o desvio-padrão da gaussiana associada
+end
